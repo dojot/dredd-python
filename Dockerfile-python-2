@@ -1,0 +1,5 @@
+FROM python:2.7
+
+RUN curl -Sl https://deb.nodesource.com/setup_8.x | bash
+RUN apt-get install -y nodejs
+RUN npm install -g dredd --no-optional
