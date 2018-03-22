@@ -1,11 +1,5 @@
-#!/bin/bash -ex
-
-version="latest"
-if [ $TRAVIS_BRANCH != "master" ] ; then
-  version=$TRAVIS_BRANCH
-fi
-tag=$TRAVIS_REPO_SLUG:$version
+#!/bin/bash
 
 docker login -u="${DOCKER_USERNAME}" -p="${DOCKER_PASSWORD}"
-docker tag dredd-python2 ${tag}
-docker push $tag
+docker push dojot/dredd-python:2.7
+docker push dojot/dredd-python:3.6
