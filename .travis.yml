@@ -1,0 +1,9 @@
+sudo: required
+language: python
+
+script:
+  - docker build -t dredd-python2 -f Dockerfile-python-2 .
+services:
+  - docker
+after_success:
+  - travis/publish.sh
