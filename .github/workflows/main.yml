@@ -1,0 +1,50 @@
+name: Dredd-python
+
+# Triggered after a branch is created, a tag or a branch is pushed or a PR
+on:
+  create:
+  push:
+  pull_request:
+
+jobs:
+
+  docker-hub:
+    name: Build and Publish images to DockerHub
+    runs-on: ubuntu-18.04
+    # If this is a PR, it won't run
+    if: contains(github.ref, 'refs/pull/') == false
+    steps:
+
+    - name: Owner Repository
+      id: get_owner
+      run: |
+        export OWNER=$(echo ${{ github.repository }} | cut -f1 -d"/")
+        echo Current Owner is $OWNER
+        echo ::set-output name=owner::$OWNER
+
+    - name: Checkout
+      uses: actions/checkout@v1
+
+    - name: Build and Push Python 2.7
+      uses: elgohr/Publish-Docker-Github-Action@2.16
+      with:
+        name: ${{ steps.get_owner.outputs.owner }}/dredd-python:2.7
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        dockerfile: Dockerfile-python-2
+        # Label with the built image's commit
+        buildoptions: " --label commit_sha_dojot=${{ github.sha }} "
+        # Whether tag will be based in the branch name or in the tag name
+        tag_names: true
+
+    - name: Build and Push Python 3.6
+      uses: elgohr/Publish-Docker-Github-Action@2.16
+      with:
+        name: ${{ steps.get_owner.outputs.owner }}/dredd-python:3.6
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        dockerfile: Dockerfile-python-3
+        # Label with the built image's commit
+        buildoptions: " --label commit_sha_dojot=${{ github.sha }} "
+        # Whether tag will be based in the branch name or in the tag name
+        tag_names: true
