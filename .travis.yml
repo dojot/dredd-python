@@ -1,9 +1,0 @@
-sudo: required
-language: python
-services:
-  - docker
-script:
-  - 'docker build -t dojot/dredd-python:2.7 -f ./Dockerfile-python-2 .'
-  - 'docker build -t dojot/dredd-python:3.6 -f ./Dockerfile-python-3 .'
-after_success:
-  - travis/publish.sh
