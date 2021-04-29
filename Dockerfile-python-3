@@ -2,5 +2,5 @@ FROM python:3.6
 
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash
 RUN apt update && apt-get install -y nodejs
-RUN npm install -g dredd --no-optional
+RUN npm install -g dredd@4.1.3 --no-optional
 
